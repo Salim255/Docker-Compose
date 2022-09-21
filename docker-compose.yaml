@@ -12,10 +12,29 @@ services:
     #or
     env_file:
         - ./env/mongo.env
-  #backend:
+  backend:
+    build: ./backend
+    #docker compose will look in the folder backend to get the Dockerfile the run it to build our image, then the image will be used in the actual container 
+    #OR
+    #build: 
+    # context: ./backend
+    # dockerfile: DockerfilName
+    # args:
+    #     some-args
+    ports:
+      - "80:80"
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules 
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
 
   #frontend:
 
 ##Name volume, only for named volume
 volumes:
   data:
+  logs:
