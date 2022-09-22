@@ -22,7 +22,7 @@ services:
     # args:
     #     some-args
     ports:
-      - "80:80"
+      - "8080:8080"
     volumes:
       - logs:/app/logs
       - ./backend:/app
@@ -32,7 +32,20 @@ services:
     depends_on:
       - mongodb
 
-  #frontend:
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    #bind my fronend src folder to the app/src iside the container 
+    stdin_open: true
+    tty: true
+    #this let the docker know that this service need input connection, so stdin_open for open stander input, and tty for attaching this terminal, so with theses two options frontend service will start in intractive mode
+    depends_on:
+      - backend
+    #to tell that this service should run after the backend service .
+
 
 ##Name volume, only for named volume
 volumes:
